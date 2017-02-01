@@ -80,6 +80,7 @@ function checkForWin() {
         break
       }
     }
+
 }
 
     // console.log();
