@@ -3,10 +3,38 @@
     <head>
         <meta charset="utf-8">
         <title>Tick Tack Toe</title>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="lib/materialize/dist/css/materialize.min.css">
         <link rel="stylesheet" href="main.css">
     </head>
     <body>
+
+
+      <!-- Dropdown -->
+      <ul id="dropdown1" class="dropdown-content">
+        <li><a href="#!">Computer</a></li>
+        <li class="divider"></li>
+        <li><a href="#!">Friend</a></li>
+      </ul>
+      <!-- Navbar -->
+      <nav>
+        <div class="nav-wrapper">
+          <a href="#!" class="brand-logo">Logo</a>
+          <ul class="right hide-on-med-and-down">
+            <!-- <li><a href="#">Sass</a></li>
+            <li><a href="#">Components</a></li> -->
+            <!-- Dropdown Trigger -->
+            <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Competitor<i class="material-icons right">arrow_drop_down</i></a></li>
+          </ul>
+        </div>
+      </nav>
+      <div>
+        <a class="waves-effect waves-light btn-large">Play</a>
+
+      </div>
+
+
+
 
         <div class="game_container container">
           <table class="bordered centered">
@@ -31,6 +59,7 @@
             </tbody>
           </table>
         </div>
+
 
 
 
