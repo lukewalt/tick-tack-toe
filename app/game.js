@@ -1,17 +1,20 @@
 
-$('.play').click()
-
 
 const xImage = "http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/black-ink-grunge-stamps-textures-icons-alphanumeric/068726-black-ink-grunge-stamp-textures-icon-alphanumeric-x-solid.png"
 const oImage ="http://www.drodd.com/images14/o25.png"
 const emptySquare = "http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png"
 
+let playerX = [];
+let playerO = [];
+
+$('.play').click()
 //the game starts with player x
-let currentPlayer = xImage
+let currentPlayer = xImage;
+let currentArray = playerX;
 
 //on click of square,
   //setup click events
-  $("td").click(changeSquare) //calls function to change image
+$("td").click(changeSquare) //calls function to change image
 
 
 function changeSquare(evt) {
@@ -22,7 +25,6 @@ function changeSquare(evt) {
    //adds data position to array that stores the players choices
 
 
-
   //if the square is empty and the game is still going allow changes
    if(clickedSquare.src === emptySquare && gameover !== true) {
     //assign it a new image
@@ -31,16 +33,14 @@ function changeSquare(evt) {
 
     writeArray(squarePosition)
 
-    checkForWin(playerX)
+    checkForWin(currentPlayer, currentArray)
     //switches turn to other player
-    changePlayer();
 
    }
 //checks for game win
 }
 
-let playerX = [];
-let playerO = [];
+
 //takes event target from squarechange
 function writeArray(squarePosition){
 
@@ -59,14 +59,17 @@ function writeArray(squarePosition){
 //change player
 function changePlayer(squarePosition) {
   //if the current player is x, flip to o, otherwise, flip to x
+
   if (currentPlayer === xImage) {
     //let the next marker be an o
     currentPlayer = oImage;
+    currentArray = playerO;
     //set the player div to O
     $(".playerMarker").html("<h1>It is O's turn</h1>")
   } else {
     //let the next marker be an x
     currentPlayer = xImage;
+    currentArray = playerX;
     //set the player div to X
     $(".playerMarker").html("<h1>It is X's turn</h1>")
   }
@@ -80,19 +83,11 @@ function checkForWin() {
                            [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6] ];
   var winingIndex = -1;
 
-  // if (winingIndex !== -1) {
-  //   // announce winner
-  // } else if (moves === 9 ) {
-  //   // announce tie
-  // } else {
-  //   // switch player
-  // }
-
     for (var i = 0; i < winCombinations.length; i++) {
       let matchesFound = 0;
       for (var j = 0; j < winCombinations[i].length; j++) {
-        console.log(matchesFound);
-        if ($.inArray(winCombinations[i][j], player1) !== -1) {
+        // console.log(matchesFound);
+        if ($.inArray(winCombinations[i][j], currentArray) !== -1) {
 
           matchesFound += 1;
           // console.log(winCombinations[i][j]);
@@ -100,14 +95,24 @@ function checkForWin() {
       }
       if (matchesFound === 3) {
         console.log('declare winner');
-        announceGameEnd("win")
+        winingIndex = matchesFound
         break
       }
     }
+
+    if (winingIndex !== -1) {
+      announceGameEnd("win")
+
+    } else {
+          changePlayer();
+    }
+    // else if (count === 9 ) {
+    //   // announce tie
+    // }
 }
 
     // console.log();
-    // if (player1 === possibleWin) {
+    // if (playerX === possibleWin) {
     //
     // } else {
     //
@@ -122,7 +127,8 @@ function announceGameEnd(message) {
   let winner = (currentPlayer === xImage) ? "X" : "O"
 
   if (message === "win") {
-    $(".playerMarker").html(`<h1>${winner} won!</h1>`)
+    $(".playerMarker h1").append(`${winner} won!`)
+    console.log("got here");
   } else {
     $(".playerMarker").html(`<h1>It's a draw!</h1>`)
   }
@@ -145,4 +151,4 @@ function updateBoard(array, player) {
 
 }
 
-updateBoard(player1, currentPlayer)
+updateBoard(playerX, currentPlayer)
