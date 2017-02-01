@@ -39,7 +39,10 @@ nav .brand-logo {
 
  /*-------------------- Game Board ----------------------*/
 
-
+.playerMarker {
+  text-align: center;
+  color: #f44336;
+}
 
 
 table {

@@ -37,8 +37,14 @@ function changeSquare(evt) {
 function changePlayer() {
   //if the current player is x, flip to o, otherwise, flip to x
   if (currentPlayer === xImage) {
+    //let the next marker be an o
     currentPlayer = oImage;
+    //set the player div to O
+    $(".playerMarker").html("<h1>It is O's turn</h1>")
   } else {
+    //let the next marker be an x
     currentPlayer = xImage;
+    //set the player div to X
+    $(".playerMarker").html("<h1>It is X's turn</h1>")
   }
 }
