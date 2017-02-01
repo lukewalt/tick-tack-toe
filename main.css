@@ -1,0 +1,16 @@
+table {
+  background-color: teal;
+}
+
+button {
+  background-color: teal;
+}
+
+.top_row td, .middle_row td {
+  border-bottom: 5px solid black;
+}
+
+.center_row {
+  border-right: 5px solid black;
+  border-left: 5px solid black;
+}
