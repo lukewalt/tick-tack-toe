@@ -1,5 +1,7 @@
 
 $('.play').click(checkForWin)
+
+player1 = [0, 3, 6]
 // game starts with player X
 
 
@@ -75,9 +77,11 @@ function checkForWin() {
       }
       if (matchesFound === 3) {
         console.log('declare winner');
+        announceGameEnd("win")
         break
       }
     }
+}
 
     // console.log();
     // if (player1 === possibleWin) {
@@ -86,3 +90,15 @@ function checkForWin() {
     //
     // }
 
+
+function announceGameEnd(message) {
+  //if the current player = x, x is winner, else o is winner
+  let winner = (currentPlayer === xImage) ? "X" : "O"
+
+  if(message === "win") {
+
+    $(".playerMarker").html(`<h1>${winner} won!</h1>`)
+  } else {
+    $(".playerMarker").html(`<h1>It's a draw!</h1>`)
+  }
+}
