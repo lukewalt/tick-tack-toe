@@ -118,11 +118,11 @@ function updateBoard(array, player) {
     //display the correct image for the corresponding player
     let playerImage = player
     //write that image to the html img tag
-    let imageSquare = `<img src=${xImage} width="150" height="150">`
+    let imageSquare = `<img src=${playerImage} width="150" height="150">`
      //update that square with the player's image
     $(`td[data-position=${arrayValue}]`).html(imageSquare)
   }
 
 }
 
-updateBoard(player1, "x")
+updateBoard(player1, currentPlayer)
