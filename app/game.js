@@ -1,9 +1,6 @@
 
 $('.play').click()
 
-player1 = [0, 3, 6]
-// game starts with player X
-
 
 const xImage = "http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/black-ink-grunge-stamps-textures-icons-alphanumeric/068726-black-ink-grunge-stamp-textures-icon-alphanumeric-x-solid.png"
 const oImage ="http://www.drodd.com/images14/o25.png"
@@ -131,3 +128,21 @@ function announceGameEnd(message) {
   }
 
 }
+
+
+function updateBoard(array, player) {
+  //for each value in the array
+ for(var i = 0; i < array.length; i++) {
+      //assign the array's value at that position to a var
+    let arrayValue = array[i];
+    //display the correct image for the corresponding player
+    let playerImage = player
+    //write that image to the html img tag
+    let imageSquare = `<img src=${playerImage} width="150" height="150">`
+     //update that square with the player's image
+    $(`td[data-position=${arrayValue}]`).html(imageSquare)
+  }
+
+}
+
+updateBoard(player1, currentPlayer)
