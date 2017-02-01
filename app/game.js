@@ -6,6 +6,8 @@ const emptySquare = "http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQ
 
 let playerX = [];
 let playerO = [];
+let count = 0;
+
 
 $('.play').click()
 //the game starts with player x
@@ -35,6 +37,8 @@ function changeSquare(evt) {
 
     checkForWin(currentPlayer, currentArray)
     //switches turn to other player
+    count += 1
+    console.log('count', count);
 
    }
 //checks for game win
@@ -49,10 +53,12 @@ function writeArray(squarePosition){
     //pushes target value to array
     playerX.push(squarePosition)
     console.log("playerX", playerX);
+
   } else {
 
     playerO.push(squarePosition)
     console.log("playerO", playerO);
+
   }
 }
 
@@ -101,14 +107,12 @@ function checkForWin() {
     }
 
     if (winingIndex !== -1) {
-      announceGameEnd("win")
-
+        announceGameEnd("win")
+    } else if (count === 8) {
+        announceGameEnd()
     } else {
-          changePlayer();
+        changePlayer();
     }
-    // else if (count === 9 ) {
-    //   // announce tie
-    // }
 }
 
     // console.log();
@@ -127,7 +131,7 @@ function announceGameEnd(message) {
   let winner = (currentPlayer === xImage) ? "X" : "O"
 
   if (message === "win") {
-    $(".playerMarker h1").append(`${winner} won!`)
+    $(".playerMarker h1").html(`${winner} won!`)
     console.log("got here");
   } else {
     $(".playerMarker").html(`<h1>It's a draw!</h1>`)
@@ -138,7 +142,7 @@ function announceGameEnd(message) {
 
 function updateBoard(array, player) {
   //for each value in the array
- for(var i = 0; i < array.length; i++) {
+  for(var i = 0; i < array.length; i++) {
       //assign the array's value at that position to a var
     let arrayValue = array[i];
     //display the correct image for the corresponding player
