@@ -52,11 +52,17 @@ function writeArray(squarePosition){
   if (currentPlayer === xImage) {
     //pushes target value to array
     playerX.push(squarePosition)
+    firebase.database().ref("playerX").push(squarePosition)
+      .then((e)=> {console.log(e)})
     console.log("playerX", playerX);
 
   } else {
 
     playerO.push(squarePosition)
+    firebase.database().ref("playerO").push(squarePosition)
+    .then((e)=> {
+      console.log(e)
+    })
     console.log("playerO", playerO);
 
   }
@@ -79,6 +85,7 @@ function changePlayer(squarePosition) {
     //set the player div to X
     $(".playerMarker").html("<h1>It is X's turn</h1>")
   }
+
 }
 
 // ------------------------ Check For Win ----------------------------
@@ -92,8 +99,10 @@ function checkForWin() {
     for (var i = 0; i < winCombinations.length; i++) {
       let matchesFound = 0;
       for (var j = 0; j < winCombinations[i].length; j++) {
+
         // console.log(matchesFound);
         if ($.inArray(winCombinations[i][j], currentArray) !== -1) {
+
 
           matchesFound += 1;
           // console.log(winCombinations[i][j]);
@@ -101,9 +110,14 @@ function checkForWin() {
       }
       if (matchesFound === 3) {
         console.log('declare winner');
+
+        clearFirebaseValues()
+
         winingIndex = matchesFound
+
         break
       }
+
     }
 
     if (winingIndex !== -1) {
@@ -113,6 +127,12 @@ function checkForWin() {
     } else {
         changePlayer();
     }
+}
+
+
+function clearFirebaseValues() {
+  firebase.database().ref("playerX").remove()
+  firebase.database().ref("playerO").remove()
 }
 
     // console.log();
@@ -154,5 +174,52 @@ function updateBoard(array, player) {
   }
 
 }
+
+
+
+//when player X moves
+function onXPlayerMove(snap) {
+  //if there is a new square
+  if(snap){
+    //let that square value equal the data-position attribute
+    let whichSquare = snap.val();
+    //write that image to the html img tag
+    let imageSquare = `<img src=${xImage} width="150" height="150">`
+     //update that square with the player's image
+    $(`td[data-position=${whichSquare}]`).html(imageSquare)
+  }
+
+}
+
+//when player O moves,
+function onOPlayerMove(snap) {
+  //if there is a new square
+  if(snap){
+    //let that square value equal the data-position attribute
+    let whichSquare = snap.val();
+    //write that image to the html img tag
+    let imageSquare = `<img src=${oImage} width="150" height="150">`
+     //update that square with the player's image
+    $(`td[data-position=${whichSquare}]`).html(imageSquare)
+  }
+
+}
+
+
+
+//listen for change in the array on firebase for playerX moves
+firebase.database()
+  .ref("playerX")
+  .on("child_added", onXPlayerMove)
+
+//listen for change in the array on firebase for playerO moves
+firebase.database()
+  .ref("playerO")
+  .on("child_added", onOPlayerMove)
+
+
+
+
+
 
 updateBoard(playerX, currentPlayer)
