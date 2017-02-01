@@ -1,5 +1,5 @@
 
-$('.play').click(checkForWin)
+$('.play').click()
 
 player1 = [0, 3, 6]
 // game starts with player X
@@ -12,7 +12,6 @@ const emptySquare = "http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQ
 //the game starts with player x
 let currentPlayer = xImage
 
-
 //on click of square,
   //setup click events
   $("td").click(changeSquare) //calls function to change image
@@ -21,20 +20,47 @@ let currentPlayer = xImage
 function changeSquare(evt) {
   //resets the image of the clicked on square to new value
    let clickedSquare = evt.target
+   //captures data position of clicked target
+   let squarePosition = parseInt(evt.target.closest('td').dataset.position);
+   //adds data position to array that stores the players choices
+
+
+
   //if the square is empty and the game is still going allow changes
    if(clickedSquare.src === emptySquare && gameover !== true) {
     //assign it a new image
     //changes image to the player's image
     clickedSquare.src = currentPlayer
+
+    writeArray(squarePosition)
+
+    checkForWin(playerX)
     //switches turn to other player
     changePlayer();
+
    }
 //checks for game win
 }
 
+let playerX = [];
+let playerO = [];
+//takes event target from squarechange
+function writeArray(squarePosition){
+
+  //checks who current player is
+  if (currentPlayer === xImage) {
+    //pushes target value to array
+    playerX.push(squarePosition)
+    console.log("playerX", playerX);
+  } else {
+
+    playerO.push(squarePosition)
+    console.log("playerO", playerO);
+  }
+}
 
 //change player
-function changePlayer() {
+function changePlayer(squarePosition) {
   //if the current player is x, flip to o, otherwise, flip to x
   if (currentPlayer === xImage) {
     //let the next marker be an o
@@ -49,6 +75,7 @@ function changePlayer() {
   }
 }
 
+// ------------------------ Check For Win ----------------------------
 //will have to have a feed from firebase as input
 function checkForWin() {
 
@@ -97,9 +124,10 @@ function announceGameEnd(message) {
   //if the current player = x, x is winner, else o is winner
   let winner = (currentPlayer === xImage) ? "X" : "O"
 
-  if(message === "win") {
+  if (message === "win") {
     $(".playerMarker").html(`<h1>${winner} won!</h1>`)
   } else {
     $(".playerMarker").html(`<h1>It's a draw!</h1>`)
   }
+
 }
