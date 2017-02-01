@@ -1,7 +1,8 @@
 
 $('.play').click(checkForWin)
 
-player1 = [0, 3, 6]
+ let player1 = [0, 3, 6]
+ let player2 = []
 // game starts with player X
 
 
