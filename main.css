@@ -47,7 +47,10 @@ nav .brand-logo {
 
 table {
   background-color: teal !important;
-  }
+  border: 5px solid #f44336;
+  box-shadow: 0 20px 20px 0 rgba(0, 0, 0, 0.2), 0 20px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-bottom: 10%;
+}
 
 
 
