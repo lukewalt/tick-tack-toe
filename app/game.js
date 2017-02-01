@@ -1,5 +1,7 @@
 
 $('.play').click(checkForWin)
+
+player1 = [0, 3, 6]
 // game starts with player X
 
 
@@ -19,9 +21,8 @@ let currentPlayer = xImage
 function changeSquare(evt) {
   //resets the image of the clicked on square to new value
    let clickedSquare = evt.target
-     //if a square isn't empty, don't allow change
-  //if the square is empty
-   if(clickedSquare.src === emptySquare) {
+  //if the square is empty and the game is still going allow changes
+   if(clickedSquare.src === emptySquare && gameover !== true) {
     //assign it a new image
     //changes image to the player's image
     clickedSquare.src = currentPlayer
@@ -75,9 +76,11 @@ function checkForWin() {
       }
       if (matchesFound === 3) {
         console.log('declare winner');
+        announceGameEnd("win")
         break
       }
     }
+}
 
     // console.log();
     // if (player1 === possibleWin) {
@@ -85,4 +88,18 @@ function checkForWin() {
     // } else {
     //
     // }
+//as long as the game is still on, gameover = false
+let gameover = false;
 
+function announceGameEnd(message) {
+  //set the gameover value to true
+  gameover = true;
+  //if the current player = x, x is winner, else o is winner
+  let winner = (currentPlayer === xImage) ? "X" : "O"
+
+  if(message === "win") {
+    $(".playerMarker").html(`<h1>${winner} won!</h1>`)
+  } else {
+    $(".playerMarker").html(`<h1>It's a draw!</h1>`)
+  }
+}
