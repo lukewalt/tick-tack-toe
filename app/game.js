@@ -113,13 +113,16 @@ function announceGameEnd(message) {
 function updateBoard(array, player) {
   //for each value in the array
  for(var i = 0; i < array.length; i++) {
+      //assign the array's value at that position to a var
     let arrayValue = array[i];
-    console.log("i", i)
+    //display the correct image for the corresponding player
     let playerImage = player
+    //write that image to the html img tag
     let imageSquare = `<img src=${xImage} width="150" height="150">`
+     //update that square with the player's image
     $(`td[data-position=${arrayValue}]`).html(imageSquare)
   }
-    //update that square with the player's image
+
 }
 
 updateBoard(player1, "x")
