@@ -105,11 +105,16 @@ function checkForWin() {
       if (matchesFound === 3) {
         console.log('declare winner');
         announceGameEnd("win")
-        firebase.database().ref("playerX").remove()
-        firebase.database().ref("playerO").remove()
+        clearFirebaseValues()
         break
       }
     }
+}
+
+
+function clearFirebaseValues() {
+  firebase.database().ref("playerX").remove()
+  firebase.database().ref("playerO").remove()
 }
 
     // console.log();
