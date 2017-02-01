@@ -21,8 +21,7 @@ let currentPlayer = xImage
 function changeSquare(evt) {
   //resets the image of the clicked on square to new value
    let clickedSquare = evt.target
-     //if a square isn't empty, don't allow change
-  //if the square is empty and the game is still going
+  //if the square is empty and the game is still going allow changes
    if(clickedSquare.src === emptySquare && gameover !== true) {
     //assign it a new image
     //changes image to the player's image
