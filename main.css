@@ -1,6 +1,37 @@
 
-
+/*-------------------- NAV --------------------*/
 nav {
-  background-color: #f44336;
+  background-color: white;
   padding: 0 5%;
+}
+
+nav ul a {
+
+  color: #f44336;
+}
+
+nav .brand-logo {
+  color: #f44336;
+
+}
+
+.dropdown-content li>a, .dropdown-content li>span {
+  background-color: #f44336;
+  color: white;
+}
+.dropdown-content:hover {
+  background-color: #fb7369;;
+  color: white;
+}
+
+
+/*-------------------- BUTTONS ----------------------*/
+
+.btn-large {
+  background-color: #f44336;
+  width: 50%;
+  margin: 3% 25%;
+}
+.btn-large:hover {
+  background-color: #ff857c;;
 }
