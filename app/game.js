@@ -48,10 +48,14 @@ function writeArray(squarePosition){
   if (currentPlayer === xImage) {
     //pushes target value to array
     playerX.push(squarePosition)
+    firebase.database().ref("playerX").push(squarePosition)
+      .then((e)=> {console.log(e)})
     console.log("playerX", playerX);
   } else {
 
     playerO.push(squarePosition)
+    firebase.database().ref("playerO").push(squarePosition)
+    .then((e)=> {console.log(e)})
     console.log("playerO", playerO);
   }
 }
@@ -92,7 +96,7 @@ function checkForWin() {
       let matchesFound = 0;
       for (var j = 0; j < winCombinations[i].length; j++) {
         console.log(matchesFound);
-        if ($.inArray(winCombinations[i][j], player1) !== -1) {
+        if ($.inArray(winCombinations[i][j], playerX) !== -1) {
 
           matchesFound += 1;
           // console.log(winCombinations[i][j]);
@@ -101,6 +105,8 @@ function checkForWin() {
       if (matchesFound === 3) {
         console.log('declare winner');
         announceGameEnd("win")
+        firebase.database().ref("playerX").remove()
+        firebase.database().ref("playerO").remove()
         break
       }
     }
@@ -145,4 +151,4 @@ function updateBoard(array, player) {
 
 }
 
-updateBoard(player1, currentPlayer)
+updateBoard(playerX, currentPlayer)
