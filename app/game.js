@@ -15,13 +15,18 @@ function checkForWin(o) {
 
   if (winingIndex !== -1) {
     return player1
+  } else if (moves === 9 ) {
+    return true
+  } else {
+    return false
   }
 
-  $.each(winCombinations, (index, possibleWin) =>{
-    $.forEach()
+  $.each(winCombinations, (index, possibleWin) => {
     if (player1 = possibleWin) {
       console.log(player1);
+
     } else {
+
     }
   })
 
