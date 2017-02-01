@@ -1,9 +1,13 @@
 
 $('.play').click(checkForWin)
-
+//array for player clicks
  let player1 = [0, 3, 6]
  let player2 = []
-// game starts with player X
+
+
+
+
+
 
 
 const xImage = "http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/black-ink-grunge-stamps-textures-icons-alphanumeric/068726-black-ink-grunge-stamp-textures-icon-alphanumeric-x-solid.png"
@@ -104,3 +108,18 @@ function announceGameEnd(message) {
     $(".playerMarker").html(`<h1>It's a draw!</h1>`)
   }
 }
+
+
+function updateBoard(array, player) {
+  //for each value in the array
+ for(var i = 0; i < array.length; i++) {
+    let arrayValue = array[i];
+    console.log("i", i)
+    let playerImage = player
+    let imageSquare = `<img src=${xImage} width="150" height="150">`
+    $(`td[data-position=${arrayValue}]`).html(imageSquare)
+  }
+    //update that square with the player's image
+}
+
+updateBoard(player1, "x")
