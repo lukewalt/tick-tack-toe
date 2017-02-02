@@ -6,6 +6,7 @@ const emptySquare = "http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQ
 
 let whoseTurn;
 let gameover;
+let plays;
 
 
 
@@ -52,6 +53,7 @@ firebase.database()
     if(snap) {
       let val = snap.val()
       currentArray = val;
+      //updates board to current array value
       updateBoard(val)
       console.log("currentArray", currentArray)
     }
@@ -81,7 +83,19 @@ firebase.database()
       console.log("gameover", gameover)
     }
   }
+//listens for change in play count
 
+firebase.database()
+  .ref("plays")
+  .on("value", setPlay)
+
+function setPlay(snap){
+    if(snap) {
+      let val = snap.val()
+      plays = val;
+      console.log("plays", plays)
+    }
+  }
 
 
 
@@ -100,7 +114,8 @@ function changeSquare(evt) {
     //adds data position to array that stores the players choices
    firebase.database().ref("moves").update({ [squarePosition] : whoseTurn})
    //add play to count of plays
-   //add play to board visually
+   let newPlayCount = (plays + 1)
+   firebase.database().ref("plays").set(newPlayCount)
 
    //run the check for win function
   }
