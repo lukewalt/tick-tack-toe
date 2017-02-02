@@ -6,7 +6,7 @@ const emptySquare = "http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQ
 //local reference for firebase data
 let whoseTurn;
 let gameover;
-let plays;
+var plays;
 //hide the playagain button
 
 
@@ -124,6 +124,7 @@ function setPlay(snap){
       let val = snap.val()
       plays = val;
       console.log("plays", plays)
+
     }
   }
 
@@ -168,6 +169,8 @@ function checkForWin(snap) {
   console.log("check for win", a);
   var wc = [ [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6],[1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6] ];
   console.log("wc", wc)
+
+
   for(var i = 0; i < wc.length; i++) {
     console.log("wc[i]", wc[i])
     console.log("wc[i][0]", wc[i][0])
@@ -178,12 +181,20 @@ function checkForWin(snap) {
         console.log("you win!!!")
         announceGameEnd("win")
         return
-        }
       }
     }
-    if(a !== ["Z", "Z", "Z", "Z", "Z", "Z", "Z", "Z", "Z"]){
-       changePlayers();
-    }
+  }
+
+  console.log("plays", plays);
+  if (plays === 8) {
+    console.log("tie");
+    announceGameEnd();
+    return
+  }
+
+  if(a !== ["Z", "Z", "Z", "Z", "Z", "Z", "Z", "Z", "Z"]){
+     changePlayers();
+  }
 
 
   }
@@ -271,6 +282,7 @@ function announceGameEnd(message) {
     $(".playAgain").show()
     console.log("got here");
   } else {
+    console.log(plays, 'tie');
     $(".playerMarker").html("<h1>It's a draw!</h1>")
   }
 
