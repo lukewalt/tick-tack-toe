@@ -9,7 +9,9 @@ let gameover;
 let plays;
 //hide the playagain button
 
-$(".playAgain").hide()
+
+// $(".playAgain").hide()
+
 
 
 //on pageload, reset firebase array
@@ -24,6 +26,27 @@ firebase.database()
 //game is not over
 firebase.database()
 .ref("gameover").set(false)
+
+
+// //listen for change in the player on firebase on game start
+// firebase.database()
+//   .ref("currentPlayer")
+//   .once("value")
+//   .then(snap => snap.val())
+//   .then((value)=>{
+//     whoseTurn = value;
+//     console.log("whoseTurn", whoseTurn)
+//     //run, change image
+//   })
+//   //listens for set of gameover value at start
+//   firebase.database()
+//   .ref("gameover")
+//   .once("value")
+//   .then(snap => snap.val())
+//   .then((value)=>{
+//     gameover = value;
+//     console.log("gameover", gameover)
+//   })
 
 //listen for change in the player on firebase on game start
 firebase.database()
@@ -44,6 +67,7 @@ firebase.database()
     gameover = value;
     console.log("gameover", gameover)
   })
+
 
 
 //listens for change in moves array
@@ -133,17 +157,7 @@ function changeSquare(evt) {
 
 
 
- // function checkForWin() {
- //   //if win, call the announce win function, clear the board
- //   // if(win) {
- //    if(plays === 3) {
- //    announceGameEnd("win")
- //    //clear the board
- //   } else {
- //   //else, change the player
- //   changePlayers();
- //    }
- // }
+
 
 // ------------------------ Check For Win ----------------------------
 
@@ -157,49 +171,22 @@ function checkForWin(snap) {
   for(var i = 0; i < wc.length; i++) {
     console.log("wc[i]", wc[i])
     console.log("wc[i][0]", wc[i][0])
-    if(a[wc[i][0]] ===a[wc[i][1]] ===a[wc[i][2]]) {
-      console.log("you win!!!")
+
+    console.log("values", a[wc[i][0]], a[wc[i][1]], a[wc[i][2]])
+    if(a[wc[i][0]] !== "Z") {
+      if ((a[wc[i][0]] === a[wc[i][1]]) && (a[wc[i][1]] === a[wc[i][2]])) {
+        console.log("you win!!!")
+        announceGameEnd("win")
+        return
+        }
       }
     }
+    if(a !== ["Z", "Z", "Z", "Z", "Z", "Z", "Z", "Z", "Z"]){
+       changePlayers();
+    }
+
 
   }
-
-
-
-
-
-
-    // for (var i = 0; i < a.length; i++) {
-    //   for (var j = 0; j < a[i].length; j++) {
-    //     console.log(a, wc[i]);
-    //     // if (a[i] === a[i[1]] === a[i[2]]) {
-    //     //   console.log();
-    //     }
-
-    // }
-// }
-      // if (matchesFound === 3) {
-      //   console.log('declare winner');
-      //
-      //   clearFirebaseValues()
-      //
-      //   winingIndex = matchesFound
-      //
-      //
-      // }
-
-
-    //
-    // if (winingIndex !== -1) {
-    //     announceGameEnd("win")
-    // } else if (count === 8) {
-    //     announceGameEnd()
-    // } else {
-    //     changePlayer();
-    // }
-
-
-
 
 
 
@@ -272,6 +259,7 @@ function changeBanner() {
 
 function announceGameEnd(message) {
   //set the gameover value to true
+
   firebase.database().ref("gameover").set(true)
   //if the current player = x, x is winner, else o is winner
   let winner = (whoseTurn === "x") ? "X" : "O"
