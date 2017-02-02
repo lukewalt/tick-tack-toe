@@ -11,7 +11,11 @@ let count = 0;
 
 $('.play').click()
 //the game starts with player x
+  //written on firebase
+firebase.database().ref("currentPlayer").set("x")
+  //written locally for image
 let currentPlayer = xImage;
+  //written locally for array
 let currentArray = playerX;
 
 //on click of square,
@@ -78,13 +82,16 @@ function changePlayer(squarePosition) {
     currentArray = playerO;
     //set the player div to O
     $(".playerMarker").html("<h1>It is O's turn</h1>")
+    firebase.database().ref("currentPlayer").set("o")
   } else {
     //let the next marker be an x
     currentPlayer = xImage;
     currentArray = playerX;
     //set the player div to X
     $(".playerMarker").html("<h1>It is X's turn</h1>")
+    firebase.database().ref("currentPlayer").set("x")
   }
+
 
 }
 
