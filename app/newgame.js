@@ -9,7 +9,9 @@ let gameover;
 let plays;
 //hide the playagain button
 
+
 // $(".playAgain").hide()
+
 
 
 //on pageload, reset firebase array
@@ -24,6 +26,7 @@ firebase.database()
 //game is not over
 firebase.database()
 .ref("gameover").set(false)
+
 
 // //listen for change in the player on firebase on game start
 // firebase.database()
@@ -45,6 +48,27 @@ firebase.database()
 //     console.log("gameover", gameover)
 //   })
 
+//listen for change in the player on firebase on game start
+firebase.database()
+  .ref("currentPlayer")
+  .once("value")
+  .then(snap => snap.val())
+  .then((value)=>{
+    whoseTurn = value;
+    console.log("whoseTurn", whoseTurn)
+    //run, change image
+  })
+  //listens for set of gameover value at start
+  firebase.database()
+  .ref("gameover")
+  .once("value")
+  .then(snap => snap.val())
+  .then((value)=>{
+    gameover = value;
+    console.log("gameover", gameover)
+  })
+
+
 
 //listens for change in moves array
 firebase.database()
@@ -59,7 +83,9 @@ firebase.database()
       updateBoard(val)
       console.log("currentArray", currentArray)
       //calls the check for win function
+
       checkForWin(val)
+
     }
   }
 //listens for change in player in
@@ -105,7 +131,9 @@ function setPlay(snap){
 
 //event listeners on DOM
 $("td").click(changeSquare) //calls function to change image
+
 // $(".playAgain").click(playAgain)
+
 
 function changeSquare(evt) {
   console.log("I've been clicked")
@@ -130,6 +158,7 @@ function changeSquare(evt) {
 
 
 
+
 // ------------------------ Check For Win ----------------------------
 
 // firebase.database().ref("moves").on('value', checkForWin)
@@ -142,6 +171,7 @@ function checkForWin(snap) {
   for(var i = 0; i < wc.length; i++) {
     console.log("wc[i]", wc[i])
     console.log("wc[i][0]", wc[i][0])
+
     console.log("values", a[wc[i][0]], a[wc[i][1]], a[wc[i][2]])
     if(a[wc[i][0]] !== "Z") {
       if ((a[wc[i][0]] === a[wc[i][1]]) && (a[wc[i][1]] === a[wc[i][2]])) {
@@ -155,7 +185,9 @@ function checkForWin(snap) {
        changePlayers();
     }
 
+
   }
+
 
 
 
@@ -227,7 +259,7 @@ function changeBanner() {
 
 function announceGameEnd(message) {
   //set the gameover value to true
-  debugger
+
   firebase.database().ref("gameover").set(true)
   //if the current player = x, x is winner, else o is winner
   let winner = (whoseTurn === "x") ? "X" : "O"
@@ -243,6 +275,7 @@ function announceGameEnd(message) {
   }
 
 }
+
 
 // function playAgain() {
 //   //resets firebase
