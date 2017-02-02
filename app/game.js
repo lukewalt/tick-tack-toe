@@ -9,7 +9,7 @@ let playerO = [];
 let count = 0;
 
 
-firebase.database().ref("moves").set(["Z", "Z", "Z", "Z", "Z", "Z", "Z", "Z", "Z"]);
+firebase.database().ref("moves").set(["X", "Z", "Z", "Z", "Z", "Z", "O", "Z", "Z"]);
 
 $('.play').click()
 //the game starts with player x
@@ -91,45 +91,44 @@ function changePlayer(squarePosition) {
 }
 
 // ------------------------ Check For Win ----------------------------
-//will have to have a feed from firebase as input
-function checkForWin() {
 
-  var winCombinations = [ [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6],
-                           [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6] ];
-  var winingIndex = -1;
+firebase.database().ref("moves").on('value', checkForWin)
 
-    for (var i = 0; i < winCombinations.length; i++) {
-      let matchesFound = 0;
-      for (var j = 0; j < winCombinations[i].length; j++) {
-
-        // console.log(matchesFound);
-        if ($.inArray(winCombinations[i][j], currentArray) !== -1) {
+function checkForWin(snap) {
+  let a = snap.val();
+  console.log(a);
+  var wc = [ [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6],[1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6] ];
 
 
-          matchesFound += 1;
-          // console.log(winCombinations[i][j]);
+    for (var i = 0; i < a.length; i++) {
+      for (var j = 0; j < a[i].length; j++) {
+        console.log(a, wc[i]);
+        // if (a[i] === a[i[1]] === a[i[2]]) {
+        //   console.log();
         }
-      }
-      if (matchesFound === 3) {
-        console.log('declare winner');
 
-        clearFirebaseValues()
-
-        winingIndex = matchesFound
-
-        break
-      }
-
-    }
-
-    if (winingIndex !== -1) {
-        announceGameEnd("win")
-    } else if (count === 8) {
-        announceGameEnd()
-    } else {
-        changePlayer();
     }
 }
+      // if (matchesFound === 3) {
+      //   console.log('declare winner');
+      //
+      //   clearFirebaseValues()
+      //
+      //   winingIndex = matchesFound
+      //
+      //
+      // }
+
+
+    //
+    // if (winingIndex !== -1) {
+    //     announceGameEnd("win")
+    // } else if (count === 8) {
+    //     announceGameEnd()
+    // } else {
+    //     changePlayer();
+    // }
+
 
 
 function clearFirebaseValues() {
