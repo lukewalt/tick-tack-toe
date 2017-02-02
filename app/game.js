@@ -9,6 +9,7 @@ let playerO = [];
 let count = 0;
 
 
+
 $('.play').click()
 //the game starts with player x
   //written on firebase
@@ -33,13 +34,29 @@ function changeSquare(evt) {
 
   //if the square is empty and the game is still going allow changes
    if(clickedSquare.src === emptySquare && gameover !== true) {
+
+    if(currentPlayer === xImage) {
+      firebase.database().ref("playerX").push(squarePosition)
+      .then((e)=> {console.log(e)})
+    console.log("playerX", playerX);
+  } else {
+    firebase.database().ref("playerO").push(squarePosition)
+    .then((e)=> {
+      console.log(e)
+    })
+    console.log("playerO", playerO);
+
+  }
+
+
+
     //assign it a new image
     //changes image to the player's image
-    clickedSquare.src = currentPlayer
+    // clickedSquare.src = currentPlayer
 
-    writeArray(squarePosition)
+    // writeArray(squarePosition)
 
-    checkForWin(currentPlayer, currentArray)
+    // checkForWin(currentPlayer, currentArray)
     //switches turn to other player
     count += 1
     console.log('count', count);
@@ -56,25 +73,27 @@ function writeArray(squarePosition){
   if (currentPlayer === xImage) {
     //pushes target value to array
     playerX.push(squarePosition)
-    firebase.database().ref("playerX").push(squarePosition)
-      .then((e)=> {console.log(e)})
-    console.log("playerX", playerX);
+    // firebase.database().ref("playerX").push(squarePosition)
+    //   .then((e)=> {console.log(e)})
+    // console.log("playerX", playerX);
 
   } else {
 
     playerO.push(squarePosition)
-    firebase.database().ref("playerO").push(squarePosition)
-    .then((e)=> {
-      console.log(e)
-    })
-    console.log("playerO", playerO);
+    // firebase.database().ref("playerO").push(squarePosition)
+    // .then((e)=> {
+    //   console.log(e)
+    // })
+    // console.log("playerO", playerO);
 
   }
+checkForWin()
 }
 
 //change player
-function changePlayer(squarePosition) {
+function changePlayer() {
   //if the current player is x, flip to o, otherwise, flip to x
+  debugger
 
   if (currentPlayer === xImage) {
     //let the next marker be an o
@@ -82,18 +101,29 @@ function changePlayer(squarePosition) {
     currentArray = playerO;
     //set the player div to O
     $(".playerMarker").html("<h1>It is O's turn</h1>")
-    firebase.database().ref("currentPlayer").set("o")
+    // firebase.database().ref("currentPlayer").set("o")
   } else {
     //let the next marker be an x
     currentPlayer = xImage;
     currentArray = playerX;
     //set the player div to X
     $(".playerMarker").html("<h1>It is X's turn</h1>")
-    firebase.database().ref("currentPlayer").set("x")
+    // firebase.database().ref("currentPlayer").set("x")
   }
 
 
 }
+
+function changeFirebasePlayer() {
+  if (currentPlayer === xImage){
+    firebase.database().ref("currentPlayer").set("o")
+  } else {
+    firebase.database().ref("currentPlayer").set("x")
+  }
+}
+
+
+
 
 // ------------------------ Check For Win ----------------------------
 //will have to have a feed from firebase as input
@@ -132,7 +162,7 @@ function checkForWin() {
     } else if (count === 8) {
         announceGameEnd()
     } else {
-        changePlayer();
+        changeFirebasePlayer();
     }
 }
 
@@ -140,6 +170,7 @@ function checkForWin() {
 function clearFirebaseValues() {
   firebase.database().ref("playerX").remove()
   firebase.database().ref("playerO").remove()
+  firebase.database().ref("currentPlayer").remove()
 }
 
     // console.log();
@@ -186,10 +217,12 @@ function updateBoard(array, player) {
 
 //when player X moves
 function onXPlayerMove(snap) {
+  debugger
   //if there is a new square
   if(snap){
     //let that square value equal the data-position attribute
     let whichSquare = snap.val();
+    writeArray(whichSquare)
     //write that image to the html img tag
     let imageSquare = `<img src=${xImage} width="150" height="150">`
      //update that square with the player's image
@@ -200,10 +233,12 @@ function onXPlayerMove(snap) {
 
 //when player O moves,
 function onOPlayerMove(snap) {
+  debugger
   //if there is a new square
   if(snap){
     //let that square value equal the data-position attribute
     let whichSquare = snap.val();
+    writeArray(whichSquare)
     //write that image to the html img tag
     let imageSquare = `<img src=${oImage} width="150" height="150">`
      //update that square with the player's image
@@ -211,7 +246,6 @@ function onOPlayerMove(snap) {
   }
 
 }
-
 
 
 //listen for change in the array on firebase for playerX moves
@@ -223,7 +257,10 @@ firebase.database()
 firebase.database()
   .ref("playerO")
   .on("child_added", onOPlayerMove)
-
+// //list for change in the value of the firebase for currentPlayer
+firebase.database()
+  .ref("currentPlayer")
+  .on("value", changePlayer)
 
 
 
