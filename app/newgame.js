@@ -59,7 +59,9 @@ firebase.database()
       updateBoard(val)
       console.log("currentArray", currentArray)
       //calls the check for win function
-      checkForWin()
+
+      checkForWin(val)
+
     }
   }
 //listens for change in player in
@@ -105,7 +107,9 @@ function setPlay(snap){
 
 //event listeners on DOM
 $("td").click(changeSquare) //calls function to change image
-$(".playAgain").click(playAgain)
+
+// $(".playAgain").click(playAgain)
+
 
 function changeSquare(evt) {
   console.log("I've been clicked")
@@ -128,17 +132,85 @@ function changeSquare(evt) {
  }
 
 
- function checkForWin() {
-   //if win, call the announce win function, clear the board
-   // if(win) {
-    if(plays === 3) {
-    announceGameEnd("win")
-    //clear the board
-   } else {
-   //else, change the player
-   changePlayers();
+
+ // function checkForWin() {
+ //   //if win, call the announce win function, clear the board
+ //   // if(win) {
+ //    if(plays === 3) {
+ //    announceGameEnd("win")
+ //    //clear the board
+ //   } else {
+ //   //else, change the player
+ //   changePlayers();
+ //    }
+ // }
+
+// ------------------------ Check For Win ----------------------------
+
+// firebase.database().ref("moves").on('value', checkForWin)
+
+function checkForWin(snap) {
+  let a = snap
+  console.log("check for win", a);
+  var wc = [ [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6],[1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6] ];
+  console.log("wc", wc)
+  for(var i = 0; i < wc.length; i++) {
+    console.log("wc[i]", wc[i])
+    console.log("wc[i][0]", wc[i][0])
+    if(a[wc[i][0]] ===a[wc[i][1]] ===a[wc[i][2]]) {
+      console.log("you win!!!")
+      }
     }
- }
+
+  }
+
+
+
+
+
+
+    // for (var i = 0; i < a.length; i++) {
+    //   for (var j = 0; j < a[i].length; j++) {
+    //     console.log(a, wc[i]);
+    //     // if (a[i] === a[i[1]] === a[i[2]]) {
+    //     //   console.log();
+    //     }
+
+    // }
+// }
+      // if (matchesFound === 3) {
+      //   console.log('declare winner');
+      //
+      //   clearFirebaseValues()
+      //
+      //   winingIndex = matchesFound
+      //
+      //
+      // }
+
+
+    //
+    // if (winingIndex !== -1) {
+    //     announceGameEnd("win")
+    // } else if (count === 8) {
+    //     announceGameEnd()
+    // } else {
+    //     changePlayer();
+    // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
  //on the change player function
 function updateBoard(array) {
@@ -216,27 +288,28 @@ function announceGameEnd(message) {
 
 }
 
-function playAgain() {
-  //resets firebase
 
-  // reset firebase array
-  firebase.database().ref("moves").set(["Z", "Z", "Z", "Z", "Z", "Z", "Z", "Z", "Z"]);
-  //current player is x
-  firebase.database()
-    .ref("currentPlayer").set("x");
-  //moves = zero
-  firebase.database()
-    .ref("plays").set(0)
+// function playAgain() {
+//   //resets firebase
 
-  //game is not over
-  firebase.database()
-    .ref("gameover").set(false)
+//   // reset firebase array
+//   firebase.database().ref("moves").set(["Z", "Z", "Z", "Z", "Z", "Z", "Z", "Z", "Z"]);
+//   //current player is x
+//   firebase.database()
+//     .ref("currentPlayer").set("x");
+//   //moves = zero
+//   firebase.database()
+//     .ref("plays").set(0)
 
-    $(".playAgain").hide()
+//   //game is not over
+//   firebase.database()
+//     .ref("gameover").set(false)
 
-  //make sure current first player is x,
-  if(whoseTurn !== "x") {
-    changePlayers()
-  }
+//     $(".playAgain").hide()
 
-}
+//   //make sure current first player is x,
+//   if(whoseTurn !== "x") {
+//     changePlayers()
+//   }
+
+// }
