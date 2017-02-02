@@ -10,7 +10,7 @@ var plays;
 //hide the playagain button
 
 
-// $(".playAgain").hide()
+$(".playAgain").hide()
 
 
 
@@ -133,7 +133,7 @@ function setPlay(snap){
 //event listeners on DOM
 $("td").click(changeSquare) //calls function to change image
 
-// $(".playAgain").click(playAgain)
+ $(".playAgain").click(playAgain)
 
 
 function changeSquare(evt) {
@@ -284,32 +284,33 @@ function announceGameEnd(message) {
   } else {
     console.log(plays, 'tie');
     $(".playerMarker").html("<h1>It's a draw!</h1>")
+    $(".playAgain").show()
   }
 
 }
 
 
-// function playAgain() {
-//   //resets firebase
+function playAgain() {
+  //resets firebase
 
-//   // reset firebase array
-//   firebase.database().ref("moves").set(["Z", "Z", "Z", "Z", "Z", "Z", "Z", "Z", "Z"]);
-//   //current player is x
-//   firebase.database()
-//     .ref("currentPlayer").set("x");
-//   //moves = zero
-//   firebase.database()
-//     .ref("plays").set(0)
+  // reset firebase array
+  firebase.database().ref("moves").set(["Z", "Z", "Z", "Z", "Z", "Z", "Z", "Z", "Z"]);
+  //current player is x
+  firebase.database()
+    .ref("currentPlayer").set("x");
+  //moves = zero
+  firebase.database()
+    .ref("plays").set(0)
 
-//   //game is not over
-//   firebase.database()
-//     .ref("gameover").set(false)
+  //game is not over
+  firebase.database()
+    .ref("gameover").set(false)
 
-//     $(".playAgain").hide()
+    $(".playAgain").hide()
 
-//   //make sure current first player is x,
-//   if(whoseTurn !== "x") {
-//     changePlayers()
-//   }
+  //make sure current first player is x,
+  if(whoseTurn !== "x") {
+    changePlayers()
+  }
 
-// }
+}
