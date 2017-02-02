@@ -3,11 +3,13 @@
 const xImage = "http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/black-ink-grunge-stamps-textures-icons-alphanumeric/068726-black-ink-grunge-stamp-textures-icon-alphanumeric-x-solid.png"
 const oImage ="http://www.drodd.com/images14/o25.png"
 const emptySquare = "http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png"
-
+//local reference for firebase data
 let whoseTurn;
 let gameover;
 let plays;
+//hide the playagain button
 
+$(".playAgain").hide()
 
 
 //on pageload, reset firebase array
@@ -101,8 +103,9 @@ function setPlay(snap){
 
 
 
-
+//event listeners on DOM
 $("td").click(changeSquare) //calls function to change image
+$(".playAgain").click(playAgain)
 
 function changeSquare(evt) {
   console.log("I've been clicked")
@@ -128,12 +131,13 @@ function changeSquare(evt) {
  function checkForWin() {
    //if win, call the announce win function, clear the board
    // if(win) {
-    //update array
+    if(plays === 3) {
+    announceGameEnd("win")
     //clear the board
-   // }
+   } else {
    //else, change the player
    changePlayers();
-
+    }
  }
 
  //on the change player function
@@ -192,4 +196,47 @@ function changeBanner() {
     //change the play marker
     $(".playerMarker").html("<h1>It is X's turn</h1>")
    }
+}
+
+function announceGameEnd(message) {
+  //set the gameover value to true
+  firebase.database().ref("gameover").set(true)
+  //if the current player = x, x is winner, else o is winner
+  let winner = (whoseTurn === "x") ? "X" : "O"
+  let announcement = `<h1>${winner} won!</h1>`
+  if (message === "win") {
+    //announce winner
+    $(".playerMarker h1").html(announcement)
+    //show play again button
+    $(".playAgain").show()
+    console.log("got here");
+  } else {
+    $(".playerMarker").html("<h1>It's a draw!</h1>")
+  }
+
+}
+
+function playAgain() {
+  //resets firebase
+
+  // reset firebase array
+  firebase.database().ref("moves").set(["Z", "Z", "Z", "Z", "Z", "Z", "Z", "Z", "Z"]);
+  //current player is x
+  firebase.database()
+    .ref("currentPlayer").set("x");
+  //moves = zero
+  firebase.database()
+    .ref("plays").set(0)
+
+  //game is not over
+  firebase.database()
+    .ref("gameover").set(false)
+
+    $(".playAgain").hide()
+
+  //make sure current first player is x,
+  if(whoseTurn !== "x") {
+    changePlayers()
+  }
+
 }
