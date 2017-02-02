@@ -56,6 +56,8 @@ firebase.database()
       //updates board to current array value
       updateBoard(val)
       console.log("currentArray", currentArray)
+      //calls the check for win function
+      checkForWin()
     }
   }
 //listens for change in player in
@@ -118,13 +120,20 @@ function changeSquare(evt) {
    firebase.database().ref("plays").set(newPlayCount)
 
    //run the check for win function
+
   }
  }
 
 
  function checkForWin() {
    //if win, call the announce win function, clear the board
+   // if(win) {
+    //update array
+    //clear the board
+   // }
    //else, change the player
+   changePlayers();
+
  }
 
  //on the change player function
@@ -158,4 +167,29 @@ function updateBoard(array) {
 
 }
 
- //write the array to the screen
+function changePlayers() {
+   if (whoseTurn === "x") {
+    //if it's x, change to o
+    firebase.database().ref("currentPlayer").set("o");
+    //change the play marker
+    $(".playerMarker").html("<h1>It is O's turn</h1>")
+   } else {
+    //else if it's o, change to x
+    firebase.database().ref("currentPlayer").set("x");
+    //change the play marker
+    $(".playerMarker").html("<h1>It is X's turn</h1>")
+   }
+}
+
+
+function changeBanner() {
+  if (whoseTurn === "x") {
+    //if it's x, change to o
+    //change the play marker
+    $(".playerMarker").html("<h1>It is O's turn</h1>")
+   } else {
+    //else if it's o, change to x
+    //change the play marker
+    $(".playerMarker").html("<h1>It is X's turn</h1>")
+   }
+}
