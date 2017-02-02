@@ -59,7 +59,9 @@ firebase.database()
       updateBoard(val)
       console.log("currentArray", currentArray)
       //calls the check for win function
+
       checkForWin(val)
+
     }
   }
 //listens for change in player in
@@ -105,7 +107,9 @@ function setPlay(snap){
 
 //event listeners on DOM
 $("td").click(changeSquare) //calls function to change image
+
 // $(".playAgain").click(playAgain)
+
 
 function changeSquare(evt) {
   console.log("I've been clicked")
@@ -126,6 +130,7 @@ function changeSquare(evt) {
 
   }
  }
+
 
 
  // function checkForWin() {
@@ -192,6 +197,7 @@ function checkForWin(snap) {
     // } else {
     //     changePlayer();
     // }
+
 
 
 
@@ -281,6 +287,7 @@ function announceGameEnd(message) {
   }
 
 }
+
 
 // function playAgain() {
 //   //resets firebase
