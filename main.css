@@ -60,3 +60,7 @@ table {
   border-left: 5px solid black !important;
 
 }
+
+.hide {
+  visibility: none; 
+}

@@ -13,7 +13,6 @@ var plays;
 $(".playAgain").hide()
 
 
-
 //on pageload, reset firebase array
 firebase.database().ref("moves").set(["Z", "Z", "Z", "Z", "Z", "Z", "Z", "Z", "Z"]);
 //current player is x
@@ -56,6 +55,13 @@ firebase.database()
   .then((value)=>{
     whoseTurn = value;
     console.log("whoseTurn", whoseTurn)
+
+    // //function(whoseTurn){
+    //   if (true) {
+    //     whoseTurn = user
+    //     allow game
+    //   }
+    // }
     //run, change image
   })
   //listens for set of gameover value at start
@@ -129,15 +135,14 @@ function setPlay(snap){
   }
 
 
-
 //event listeners on DOM
 $("td").click(changeSquare) //calls function to change image
 
  $(".playAgain").click(playAgain)
 
-
 function changeSquare(evt) {
   console.log("I've been clicked")
+
   //resets the image of the clicked on square to new value
    let clickedSquare = evt.target
    //captures data position of clicked target
@@ -198,11 +203,6 @@ function checkForWin(snap) {
 
 
   }
-
-
-
-
-
 
 
 
@@ -280,9 +280,7 @@ function announceGameEnd(message) {
     $(".playerMarker h1").html(announcement)
     //show play again button
     $(".playAgain").show()
-    console.log("got here");
   } else {
-    console.log(plays, 'tie');
     $(".playerMarker").html("<h1>It's a draw!</h1>")
     $(".playAgain").show()
   }
@@ -314,3 +312,11 @@ function playAgain() {
   }
 
 }
+
+
+$('#enter-game').click(()=>{
+  console.log("Enter");
+  $('.landing').addClass('hide')
+  $('.game_container').removeClass('hide')
+
+})
