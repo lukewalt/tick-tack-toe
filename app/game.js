@@ -33,14 +33,14 @@ function changeSquare(evt) {
    if(clickedSquare.src === emptySquare && gameover !== true) {
     //assign it a new image
     //changes image to the player's image
-    clickedSquare.src = currentPlayer
+    // clickedSquare.src = currentPlayer
 
-    writeArray(squarePosition)
+    // writeArray(squarePosition)
 
-    checkForWin(currentPlayer, currentArray)
+    // checkForWin(currentPlayer, currentArray)
     //switches turn to other player
-    count += 1
-    console.log('count', count);
+    // count += 1
+    // console.log('count', count);
 
    }
 //checks for game win
@@ -218,8 +218,15 @@ firebase.database()
 firebase.database()
   .ref("playerO")
   .on("child_added", onOPlayerMove)
-
-
+//list for change in the player on firebase
+firebase.database()
+  .ref("currentPlayer")
+  .on("value", (snap)=>{
+    return snap.val();
+  }).then((value)=>{
+    whoseTurn = value;
+    console.log("whoseTurn", whoseTurn)
+  })
 
 
 
