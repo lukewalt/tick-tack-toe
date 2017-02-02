@@ -9,6 +9,8 @@ let playerO = [];
 let count = 0;
 
 
+firebase.database().ref("moves").set(["Z", "Z", "Z", "Z", "Z", "Z", "Z", "Z", "Z"]);
+
 $('.play').click()
 //the game starts with player x
 let currentPlayer = xImage;
