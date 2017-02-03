@@ -22,7 +22,19 @@ const form = document.querySelector('form')
 const messagesRef = firebase.database().ref('messages')
 const messagesDiv = document.querySelector('.messages')
 
-
+// firebase.auth()
+//   .onAuthStateChanged((user)=> {
+//     return user;
+//   })
+//   .then(user =>{
+//     if(user) {
+//       console.log("there is a user")
+//       let updateUser = users-= 1;
+//       firebase.database()
+//         .ref("users")
+//         .set(users);
+//     }
+//   })
 
 
 $(".playAgain").hide()
@@ -139,9 +151,9 @@ firebase.database()
   .ref("users")
   .on("value", setUser)
 
-  firebase.database()
-  .ref("users")
-  .once("value", assignRole)
+  // firebase.database()
+  // .ref("users")
+  // .once("value", assignRole)
 
 function setUser(snap){
     if(snap) {
@@ -152,18 +164,16 @@ function setUser(snap){
     }
 }
 
-function assignRole(snap) {
-    if(snap) {
-      let val = snap.val()
-      users = val;
+function assignRole() {
       if (users === null || users === 0) {
         playerRole = "x"
       } else if (users === 1){
         playerRole = "o"
+      } else {
+        playerRole = " an observer (You're just watching the game)"
       }
-      $(".playerCard").html(`<h4>You're Player ${playerRole}</h4>`)
+      $(".playerCard").html(`<h4>You're ${playerRole}</h4>`)
       console.log("playerRole", playerRole)
-    }
 }
 
 
@@ -451,6 +461,7 @@ function joinGame() {
     .signInAnonymously()
     .then((e)=>{
       console.log("e.uid", e.uid)
+      assignRole();
       //set user count to one
       let updateUser = users ? users+= 1 : 1;
       firebase.database()
@@ -479,23 +490,38 @@ function leaveGame() {
 
 
 
-firebase.auth().signInAnonymously().catch(function(error) {
-  // Handle Errors here.
-  var errorCode = error.code;
-  var errorMessage = error.message;
-  // ...
-});
+// firebase.auth().signInAnonymously().catch(function(error) {
+//   // Handle Errors here.
+//   var errorCode = error.code;
+//   var errorMessage = error.message;
+//   // ...
+// });
 
 
- firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    // User is signed in.
-    var isAnonymous = user.isAnonymous;
-    var uid = user.uid;
+  function checkForUser() {
+    firebase.auth().onAuthStateChanged(function(user) {
+      // checkForUser()
+      console.log("user", user)
+      if (user === null) {
+        console.log("no user")
+        } else if (user !== null && playerRole === undefined){
+        // User is signed in.
+        console.log("inside the function")
+        var isAnonymous = user.isAnonymous;
+        var uid = user.uid;
+        let updateUser = users=- 1;
+          firebase.database()
+            .ref("users")
+            .set(updateUser);
+
+        firebase.auth().signOut();
+      // ...
+    } else {
+      // User is signed out.
+      // ...
+    }
     // ...
-  } else {
-    // User is signed out.
-    // ...
-  }
-  // ...
-});
+  });
+}
+
+checkForUser()
