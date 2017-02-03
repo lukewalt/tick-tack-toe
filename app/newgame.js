@@ -151,9 +151,9 @@ firebase.database()
   .ref("users")
   .on("value", setUser)
 
-  // firebase.database()
-  // .ref("users")
-  // .once("value", assignRole)
+  firebase.database()
+  .ref("users")
+  .once("value", setUserAtStart)
 
 function setUser(snap){
     if(snap) {
@@ -163,6 +163,20 @@ function setUser(snap){
 
     }
 }
+
+
+function setUserAtStart(snap){
+    if(snap) {
+      let val = snap.val()
+      users = val;
+      console.log("users", users)
+      checkForUser()
+    }
+}
+
+
+
+
 
 function assignRole() {
       if (users === null || users === 0) {
@@ -502,6 +516,7 @@ function leaveGame() {
     firebase.auth().onAuthStateChanged(function(user) {
       // checkForUser()
       console.log("user", user)
+      let updateUser = 0;
       if (user === null) {
         console.log("no user")
         } else if (user !== null && playerRole === undefined){
@@ -509,7 +524,8 @@ function leaveGame() {
         console.log("inside the function")
         var isAnonymous = user.isAnonymous;
         var uid = user.uid;
-        let updateUser = users=- 1;
+        updateUser = (users - 1);
+        console.log("updateUser", updateUser)
           firebase.database()
             .ref("users")
             .set(updateUser);
@@ -523,5 +539,3 @@ function leaveGame() {
     // ...
   });
 }
-
-checkForUser()
