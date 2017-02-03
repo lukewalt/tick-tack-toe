@@ -158,9 +158,10 @@ function assignRole(snap) {
       users = val;
       if (users === null || users === 0) {
         playerRole = "x"
-      } else {
+      } else if (users === 1){
         playerRole = "o"
       }
+      $(".playerCard").html(`<h4>You're Player ${playerRole}</h4>`)
       console.log("playerRole", playerRole)
     }
 }
