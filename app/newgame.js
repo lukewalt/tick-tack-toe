@@ -3,11 +3,16 @@
 const xImage = "http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/black-ink-grunge-stamps-textures-icons-alphanumeric/068726-black-ink-grunge-stamp-textures-icon-alphanumeric-x-solid.png"
 const oImage ="http://www.drodd.com/images14/o25.png"
 const emptySquare = "http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png"
+
+//role for local player
+var playerRole;
+
 //local reference for firebase data
 let whoseTurn;
 let gameover;
 var plays;
 var users;
+
 //hide the playagain button
 
 
@@ -17,7 +22,19 @@ const form = document.querySelector('form')
 const messagesRef = firebase.database().ref('messages')
 const messagesDiv = document.querySelector('.messages')
 
-
+// firebase.auth()
+//   .onAuthStateChanged((user)=> {
+//     return user;
+//   })
+//   .then(user =>{
+//     if(user) {
+//       console.log("there is a user")
+//       let updateUser = users-= 1;
+//       firebase.database()
+//         .ref("users")
+//         .set(users);
+//     }
+//   })
 
 
 $(".playAgain").hide()
@@ -104,6 +121,13 @@ firebase.database()
       let val = snap.val()
       gameover = val;
       console.log("gameover", gameover)
+      // if(gameover === true) {
+      //   $(".playAgain").show()
+      //   $(".exit-game").show()
+      // } else {
+      //   $(".playAgain").hide()
+      //   $(".exit-game").hide()
+      // }
     }
   }
 //listens for change in play count
@@ -121,6 +145,51 @@ function setPlay(snap){
     }
 }
 
+//listens for change in user count
+
+firebase.database()
+  .ref("users")
+  .on("value", setUser)
+
+  firebase.database()
+  .ref("users")
+  .once("value", setUserAtStart)
+
+function setUser(snap){
+    if(snap) {
+      let val = snap.val()
+      users = val;
+      console.log("users", users)
+
+    }
+}
+
+
+function setUserAtStart(snap){
+    if(snap) {
+      let val = snap.val()
+      users = val;
+      console.log("users", users)
+      checkForUser()
+    }
+}
+
+
+
+
+
+function assignRole() {
+      if (users === null || users === 0) {
+        playerRole = "x"
+      } else if (users === 1){
+        playerRole = "o"
+      } else {
+        playerRole = " an observer (You're just watching the game)"
+      }
+      $(".playerCard").html(`<h4>You're ${playerRole}</h4>`)
+      console.log("playerRole", playerRole)
+}
+
 
 //event listeners on DOM
 $("td").click(changeSquare) //calls function to change image
@@ -136,7 +205,7 @@ function changeSquare(evt) {
    let squarePosition = parseInt(evt.target.closest('td').dataset.position);
 
    //if valid array, update firebase
-   if(clickedSquare.src === emptySquare && gameover !== true) {
+   if(clickedSquare.src === emptySquare && gameover !== true && whoseTurn === playerRole) {
     //adds data position to array that stores the players choices
    firebase.database().ref("moves").update({ [squarePosition] : whoseTurn})
    //add play to count of plays
@@ -303,6 +372,8 @@ $('.enter-game').click(()=>{
     $('.landing').addClass('hide');
     $('.game_container').removeClass('hide');
     $('.messages').empty()
+    //signs user in
+    joinGame();
 
 
 })
@@ -326,6 +397,9 @@ $('.exit-game').click(()=>{
     .ref("gameover").set(false)
 
   $('.messages').empty()
+
+  //signs user out
+  leaveGame()
 
 })
 
@@ -390,3 +464,78 @@ const renderMessage = (msg) => {
  form.addEventListener('submit', sendMessage)
 
  messagesRef.limitToLast(maxMsg).on('child_added', onNewMessage)
+
+
+
+
+//User Auth
+
+function joinGame() {
+  firebase.auth()
+    .signInAnonymously()
+    .then((e)=>{
+      console.log("e.uid", e.uid)
+      assignRole();
+      //set user count to one
+      let updateUser = users ? users+= 1 : 1;
+      firebase.database()
+        .ref("users")
+        .set(updateUser);
+      //call function to assign user role
+    })
+    .catch(function(error) {
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  console.log("error", errorMessage)
+  })
+}
+
+function leaveGame() {
+  firebase.auth()
+    .signOut()
+    .then(()=>{
+      let updateUser = users-= 1;
+      firebase.database()
+        .ref("users")
+        .set(users);
+    })
+}
+
+
+
+// firebase.auth().signInAnonymously().catch(function(error) {
+//   // Handle Errors here.
+//   var errorCode = error.code;
+//   var errorMessage = error.message;
+//   // ...
+// });
+
+
+  function checkForUser() {
+    firebase.auth().onAuthStateChanged(function(user) {
+      // checkForUser()
+      console.log("user", user)
+      let updateUser = 0;
+      if (user === null) {
+        console.log("no user")
+        } else if (user !== null && playerRole === undefined){
+        // User is signed in.
+        console.log("inside the function")
+        var isAnonymous = user.isAnonymous;
+        var uid = user.uid;
+        updateUser = (users - 1);
+        console.log("updateUser", updateUser)
+          firebase.database()
+            .ref("users")
+            .set(updateUser);
+
+        firebase.auth().signOut();
+      // ...
+    } else {
+      // User is signed out.
+      // ...
+    }
+    // ...
+  });
+}
