@@ -109,13 +109,13 @@ firebase.database()
       let val = snap.val()
       gameover = val;
       console.log("gameover", gameover)
-      if(gameover === true) {
-        $(".playAgain").show()
-        $(".exit-game").show()
-      } else {
-        $(".playAgain").hide()
-        $(".exit-game").hide()
-      }
+      // if(gameover === true) {
+      //   $(".playAgain").show()
+      //   $(".exit-game").show()
+      // } else {
+      //   $(".playAgain").hide()
+      //   $(".exit-game").hide()
+      // }
     }
   }
 //listens for change in play count
@@ -139,6 +139,10 @@ firebase.database()
   .ref("users")
   .on("value", setUser)
 
+  firebase.database()
+  .ref("users")
+  .once("value", assignRole)
+
 function setUser(snap){
     if(snap) {
       let val = snap.val()
@@ -148,7 +152,18 @@ function setUser(snap){
     }
 }
 
-
+function assignRole(snap) {
+    if(snap) {
+      let val = snap.val()
+      users = val;
+      if (users === null || users === 0) {
+        playerRole = "x"
+      } else {
+        playerRole = "o"
+      }
+      console.log("playerRole", playerRole)
+    }
+}
 
 
 //event listeners on DOM
@@ -165,7 +180,7 @@ function changeSquare(evt) {
    let squarePosition = parseInt(evt.target.closest('td').dataset.position);
 
    //if valid array, update firebase
-   if(clickedSquare.src === emptySquare && gameover !== true) {
+   if(clickedSquare.src === emptySquare && gameover !== true && whoseTurn === playerRole) {
     //adds data position to array that stores the players choices
    firebase.database().ref("moves").update({ [squarePosition] : whoseTurn})
    //add play to count of plays
