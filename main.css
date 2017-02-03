@@ -37,6 +37,19 @@ nav .brand-logo {
   background-color: #ff857c;
 }
 
+
+.exit-game,
+.playAgain {
+  width: 49.5%;
+  margin: 1px;
+  float: left;
+
+}
+
+.btn-cont {
+  margin: 5% 0;
+}
+
  /*-------------------- Game Board ----------------------*/
 
 .playerMarker {
@@ -47,7 +60,7 @@ nav .brand-logo {
 
 table {
   background-color: teal !important;
-  }
+}
 
 
 
@@ -61,6 +74,29 @@ table {
 
 }
 
+.landing {
+  margin: 0 25%;
+  text-align: center;
+  color: teal;
+
+}
+
+/*-------------------- CHAT -------------------*/
+
+.chat{
+  width: 75%;
+  text-align: center;
+  margin: 0 12.5%;
+}
+
+.messages {
+  border: 1px dotted teal;
+  margin: 3% 0;
+  padding: 3%;
+
+}
+
+
 .hide {
-  visibility: none; 
+  visibility: none;
 }
