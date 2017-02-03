@@ -2,11 +2,87 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Tick Tack Toe</title>
+        <title>Tic Tac Toe</title>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="lib/materialize/dist/css/materialize.min.css">
         <link rel="stylesheet" href="main.css">
     </head>
     <body>
+
+
+      <!-- Dropdown -->
+      <ul id="dropdown1" class="dropdown-content">
+        <li><a href="#!">Computer</a></li>
+        <li class="divider"></li>
+        <li><a href="#!">Friend</a></li>
+      </ul>
+      <!-- Navbar -->
+      <nav>
+        <div class="nav-wrapper">
+          <a href="#!" class="brand-logo">Logo</a>
+          <ul class="right hide-on-med-and-down">
+            <!-- <li><a href="#">Sass</a></li>
+            <li><a href="#">Components</a></li> -->
+            <!-- Dropdown Trigger -->
+            <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Competitor<i class="material-icons right">arrow_drop_down</i></a></li>
+          </ul>
+        </div>
+      </nav>
+
+
+      <div class="landing">
+        <h1>Tic Tac Toe</h1>
+        <button type="button" name="button" class="btn-large enter-game">Enter</button>
+      </div>
+
+      <div class="game_container container hide">
+        <div class="btn-cont row">
+          <button class="waves-effect waves-light btn-large playAgain">Play Again</button>
+          <button type="button" name="button" class="waves-effect waves-light btn-large exit-game">Exit Game</button>
+        </div>
+
+
+        <div class="playerCard">
+
+        </div>
+
+        <div class="playerMarker">
+            <h1>It is X's turn</h1>
+        </div>
+
+        <table class="bordered centered board">
+
+
+
+          <tbody>
+            <tr class="top_row">
+              <td data-position="0"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
+              <td data-position="1"class="center_row"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
+              <td data-position="2"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
+            </tr>
+            <tr class="middle_row">
+              <td data-position="3"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
+              <td data-position="4"class="center_row"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
+             <td data-position="5"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
+            </tr>
+            <tr>
+              <td data-position="6"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
+              <td data-position="7"class="center_row"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
+              <td data-position="8"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="chat">
+          <h5>Chat Box</h5>
+          <form>
+            <input type="text" placeholder="name" name="name" required />
+            <input type="text" placeholder="message" name="content" required />
+            <input type="submit">
+          </form>
+          <div class="messages"></div>
+        </div>
+      </div>
 
 
 
@@ -16,6 +92,6 @@
     <script type="text/javascript" src="lib/materialize/dist/js/materialize.min.js"></script>
     <script type="text/javascript" src="lib/firebase/firebase.js"></script>
     <script type="text/javascript" src="app/auth.js"></script>
-    <script type="text/javascript" src="app/game.js"></script>
+    <script type="text/javascript" src="app/newgame.js"></script>
     </body>
 </html>

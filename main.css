@@ -1,0 +1,106 @@
+
+
+/*-------------------- NAV --------------------*/
+nav {
+  background-color: white;
+  padding: 0 5%;
+}
+
+nav ul a {
+
+  color: #f44336;
+}
+
+nav .brand-logo {
+  color: #f44336;
+
+}
+
+.dropdown-content li>a, .dropdown-content li>span {
+  background-color: #f44336;
+  color: white;
+}
+.dropdown-content:hover {
+  background-color: #fb7369;;
+  color: white;
+}
+
+
+/*-------------------- BUTTONS ----------------------*/
+
+.btn-large {
+  background-color: #f44336;
+  width: 50%;
+  margin: 3% 25%;
+}
+.btn-large:hover {
+  background-color: #ff857c;
+}
+
+
+.exit-game,
+.playAgain {
+  width: 49.5%;
+  margin: 1px;
+  float: left;
+
+}
+
+.btn-cont {
+  margin: 5% 0;
+}
+
+ /*-------------------- Game Board ----------------------*/
+
+.playerMarker {
+  text-align: center;
+  color: #f44336;
+}
+
+
+table {
+  background-color: teal !important;
+  border: 5px solid #f44336;
+  box-shadow: 0 20px 20px 0 rgba(0, 0, 0, 0.2), 0 20px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-bottom: 10%;
+
+}
+
+
+
+.top_row td, .middle_row td {
+  border-bottom: 5px solid black !important;
+}
+
+.center_row {
+  border-right: 5px solid black !important;
+  border-left: 5px solid black !important;
+
+}
+
+.landing {
+  margin: 0 25%;
+  text-align: center;
+  color: teal;
+
+}
+
+/*-------------------- CHAT -------------------*/
+
+.chat{
+  width: 75%;
+  text-align: center;
+  margin: 0 12.5%;
+}
+
+.messages {
+  border: 1px dotted teal;
+  margin: 3% 0;
+  padding: 3%;
+
+}
+
+
+.hide {
+  visibility: none;
+}
