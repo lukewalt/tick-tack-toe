@@ -3,11 +3,16 @@
 const xImage = "http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/black-ink-grunge-stamps-textures-icons-alphanumeric/068726-black-ink-grunge-stamp-textures-icon-alphanumeric-x-solid.png"
 const oImage ="http://www.drodd.com/images14/o25.png"
 const emptySquare = "http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png"
+
+//role for local player
+var playerRole;
+
 //local reference for firebase data
 let whoseTurn;
 let gameover;
 var plays;
 var users;
+
 //hide the playagain button
 
 
@@ -127,6 +132,23 @@ function setPlay(snap){
 
     }
 }
+
+//listens for change in user count
+
+firebase.database()
+  .ref("users")
+  .on("value", setUser)
+
+function setUser(snap){
+    if(snap) {
+      let val = snap.val()
+      users = val;
+      console.log("users", users)
+
+    }
+}
+
+
 
 
 //event listeners on DOM
@@ -310,6 +332,8 @@ $('.enter-game').click(()=>{
     $('.landing').addClass('hide');
     $('.game_container').removeClass('hide');
     $('.messages').empty()
+    //signs user in
+    joinGame();
 
 
 })
@@ -333,6 +357,9 @@ $('.exit-game').click(()=>{
     .ref("gameover").set(false)
 
   $('.messages').empty()
+
+  //signs user out
+  leaveGame()
 
 })
 
@@ -402,6 +429,38 @@ const renderMessage = (msg) => {
 
 
 //User Auth
+
+function joinGame() {
+  firebase.auth()
+    .signInAnonymously()
+    .then((e)=>{
+      console.log("e.uid", e.uid)
+      //set user count to one
+      let updateUser = users ? users+= 1 : 1;
+      firebase.database()
+        .ref("users")
+        .set(updateUser);
+      //call function to assign user role
+    })
+    .catch(function(error) {
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  console.log("error", errorMessage)
+  })
+}
+
+function leaveGame() {
+  firebase.auth()
+    .signOut()
+    .then(()=>{
+      let updateUser = users-= 1;
+      firebase.database()
+        .ref("users")
+        .set(users);
+    })
+}
+
 
 
 firebase.auth().signInAnonymously().catch(function(error) {
