@@ -28,43 +28,57 @@
           </ul>
         </div>
       </nav>
-      <div>
-        <button class="waves-effect waves-light btn-large playAgain">Play Again</button>
 
+
+      <div class="landing">
+        <h1>Tic Tac Toe</h1>
+        <button type="button" name="button" class="btn-large enter-game">Enter</button>
       </div>
 
-
-
-
-        <div class="game_container container">
-
-          <div class="playerMarker">
-              <h1>It is X's turn</h1>
-          </div>
-
-          <table class="bordered centered board">
-
-
-
-            <tbody>
-              <tr class="top_row">
-                <td data-position="0"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
-                <td data-position="1"class="center_row"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
-                <td data-position="2"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
-              </tr>
-              <tr class="middle_row">
-                <td data-position="3"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
-                <td data-position="4"class="center_row"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
-               <td data-position="5"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
-              </tr>
-              <tr>
-                <td data-position="6"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
-                <td data-position="7"class="center_row"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
-                <td data-position="8"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
-              </tr>
-            </tbody>
-          </table>
+      <div class="game_container container hide">
+        <div class="btn-cont row">
+          <button class="waves-effect waves-light btn-large playAgain">Play Again</button>
+          <button type="button" name="button" class="waves-effect waves-light btn-large exit-game">Exit Game</button>
         </div>
+
+
+        <div class="playerMarker">
+            <h1>It is X's turn</h1>
+        </div>
+
+        <table class="bordered centered board">
+
+
+
+          <tbody>
+            <tr class="top_row">
+              <td data-position="0"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
+              <td data-position="1"class="center_row"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
+              <td data-position="2"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
+            </tr>
+            <tr class="middle_row">
+              <td data-position="3"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
+              <td data-position="4"class="center_row"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
+             <td data-position="5"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
+            </tr>
+            <tr>
+              <td data-position="6"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
+              <td data-position="7"class="center_row"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
+              <td data-position="8"><img src="http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png" width="150" height="150"></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="chat">
+          <h5>Chat Box</h5>
+          <form>
+            <input type="text" placeholder="name" name="name" required />
+            <input type="text" placeholder="message" name="content" required />
+            <input type="submit">
+          </form>
+          <div class="messages"></div>
+        </div>
+      </div>
 
 
 

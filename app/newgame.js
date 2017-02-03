@@ -7,13 +7,23 @@ const emptySquare = "http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQ
 let whoseTurn;
 let gameover;
 var plays;
+var users;
 //hide the playagain button
 
 
+const maxMsg = 10
+
+const form = document.querySelector('form')
+const messagesRef = firebase.database().ref('messages')
+const messagesDiv = document.querySelector('.messages')
+
+
+
+
 $(".playAgain").hide()
+$(".exit-game").hide()
 
-
-
+//--------- PAGE LOAD -----------------
 //on pageload, reset firebase array
 firebase.database().ref("moves").set(["Z", "Z", "Z", "Z", "Z", "Z", "Z", "Z", "Z"]);
 //current player is x
@@ -28,26 +38,9 @@ firebase.database()
 .ref("gameover").set(false)
 
 
-// //listen for change in the player on firebase on game start
-// firebase.database()
-//   .ref("currentPlayer")
-//   .once("value")
-//   .then(snap => snap.val())
-//   .then((value)=>{
-//     whoseTurn = value;
-//     console.log("whoseTurn", whoseTurn)
-//     //run, change image
-//   })
-//   //listens for set of gameover value at start
-//   firebase.database()
-//   .ref("gameover")
-//   .once("value")
-//   .then(snap => snap.val())
-//   .then((value)=>{
-//     gameover = value;
-//     console.log("gameover", gameover)
-//   })
 
+
+//------------------ FIREBASE SNAPS ------------------
 //listen for change in the player on firebase on game start
 firebase.database()
   .ref("currentPlayer")
@@ -55,8 +48,6 @@ firebase.database()
   .then(snap => snap.val())
   .then((value)=>{
     whoseTurn = value;
-    console.log("whoseTurn", whoseTurn)
-    //run, change image
   })
   //listens for set of gameover value at start
   firebase.database()
@@ -75,19 +66,21 @@ firebase.database()
   .ref("moves")
   .on("value", setCurrentArray)
 
-  function setCurrentArray(snap) {
-    if(snap) {
-      let val = snap.val()
-      currentArray = val;
-      //updates board to current array value
-      updateBoard(val)
-      console.log("currentArray", currentArray)
-      //calls the check for win function
+function setCurrentArray(snap) {
+  if(snap) {
+    let val = snap.val()
+    currentArray = val;
+    //updates board to current array value
+    updateBoard(val)
+    console.log("currentArray", currentArray)
+    //calls the check for win function
 
-      checkForWin(val)
+    checkForWin(val)
 
-    }
   }
+}
+
+
 //listens for change in player in
 firebase.database()
   .ref("currentPlayer")
@@ -126,18 +119,17 @@ function setPlay(snap){
       console.log("plays", plays)
 
     }
-  }
-
+}
 
 
 //event listeners on DOM
 $("td").click(changeSquare) //calls function to change image
 
- $(".playAgain").click(playAgain)
-
+$(".playAgain").click(playAgain)
 
 function changeSquare(evt) {
   console.log("I've been clicked")
+
   //resets the image of the clicked on square to new value
    let clickedSquare = evt.target
    //captures data position of clicked target
@@ -166,16 +158,10 @@ function changeSquare(evt) {
 
 function checkForWin(snap) {
   let a = snap
-  console.log("check for win", a);
   var wc = [ [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6],[1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6] ];
-  console.log("wc", wc)
-
 
   for(var i = 0; i < wc.length; i++) {
-    console.log("wc[i]", wc[i])
-    console.log("wc[i][0]", wc[i][0])
 
-    console.log("values", a[wc[i][0]], a[wc[i][1]], a[wc[i][2]])
     if(a[wc[i][0]] !== "Z") {
       if ((a[wc[i][0]] === a[wc[i][1]]) && (a[wc[i][1]] === a[wc[i][2]])) {
         console.log("you win!!!")
@@ -197,16 +183,7 @@ function checkForWin(snap) {
   }
 
 
-  }
-
-
-
-
-
-
-
-
-
+}
 
 
 
@@ -280,11 +257,12 @@ function announceGameEnd(message) {
     $(".playerMarker h1").html(announcement)
     //show play again button
     $(".playAgain").show()
-    console.log("got here");
+    $(".exit-game").show()
   } else {
-    console.log(plays, 'tie');
     $(".playerMarker").html("<h1>It's a draw!</h1>")
     $(".playAgain").show()
+    $(".exit-game").show()
+
   }
 
 }
@@ -306,11 +284,109 @@ function playAgain() {
   firebase.database()
     .ref("gameover").set(false)
 
+
+
     $(".playAgain").hide()
+    $(".exit-game").hide()
 
   //make sure current first player is x,
   if(whoseTurn !== "x") {
     changePlayers()
   }
 
+
 }
+
+
+$('.enter-game').click(()=>{
+
+    $('.landing').addClass('hide');
+    $('.game_container').removeClass('hide');
+    $('.messages').empty()
+
+
+})
+
+$('.exit-game').click(()=>{
+
+  $('.game_container').addClass('hide');
+  $('.landing').removeClass('hide');
+  //take user out of playing position
+  // reset firebase array
+  firebase.database().ref("moves").set(["Z", "Z", "Z", "Z", "Z", "Z", "Z", "Z", "Z"]);
+  //current player is x
+  firebase.database()
+    .ref("currentPlayer").set("x");
+  //moves = zero
+  firebase.database()
+    .ref("plays").set(0)
+
+  //game is not over
+  firebase.database()
+    .ref("gameover").set(false)
+
+  $('.messages').empty()
+
+})
+
+
+
+
+const sendMessage = (evt) => {
+  evt.preventDefault()
+
+  const nameInput = evt.target.elements.name // evt.target.querySelctor('[name="name"]')
+  const contentInput = evt.target.elements.content // evt.target.querySelctor('[name="content"]')
+
+  const name = nameInput.value.trim()
+  const content = contentInput.value.trim()
+
+  if (name && content) {
+    messagesRef.push({ name, content })
+      .then(() => contentInput.value = '')
+  }
+}
+
+const renderMessage = (msg) => {
+   const docFragment = document.createDocumentFragment()
+
+   const div = document.createElement('DIV')
+   docFragment.appendChild(div)
+
+   const strong = document.createElement('STRONG')
+   div.appendChild(strong)
+
+   const name = document.createTextNode(msg.name)
+   strong.appendChild(name)
+
+   const seperator = document.createTextNode(': ')
+   div.appendChild(seperator)
+
+   const span = document.createElement('SPAN')
+   div.appendChild(span)
+
+   const content = document.createTextNode(msg.content)
+   span.appendChild(content)
+
+   return docFragment
+ }
+
+ const onNewMessage = (snap) => {
+   const msg = snap.val() // { name: 'Scott', content: 'Hey' }
+
+   messagesDiv.appendChild(renderMessage(msg))
+
+   // messagesDiv.innerHTML += `
+   //   <div>
+   //     <strong>${msg.name}</strong>: <span>${msg.content}</span>
+   //   </div>
+   // `
+
+   if (messagesDiv.childElementCount > maxMsg) {
+     messagesDiv.firstChild.remove()
+   }
+ }
+
+ form.addEventListener('submit', sendMessage)
+
+ messagesRef.limitToLast(maxMsg).on('child_added', onNewMessage)
