@@ -3,11 +3,16 @@
 const xImage = "http://cdn.mysitemyway.com/etc-mysitemyway/icons/legacy-previews/icons-256/black-ink-grunge-stamps-textures-icons-alphanumeric/068726-black-ink-grunge-stamp-textures-icon-alphanumeric-x-solid.png"
 const oImage ="http://www.drodd.com/images14/o25.png"
 const emptySquare = "http://1.bp.blogspot.com/-jJUO43k6ReU/T7ivfcr4fgI/AAAAAAAAQqU/8YdJwPwT4OE/s1600/transparent.png"
+
+//role for local player
+var playerRole;
+
 //local reference for firebase data
 let whoseTurn;
 let gameover;
 var plays;
 var users;
+
 //hide the playagain button
 
 
@@ -102,6 +107,13 @@ firebase.database()
       let val = snap.val()
       gameover = val;
       console.log("gameover", gameover)
+      // if(gameover === true) {
+      //   $(".playAgain").show()
+      //   $(".exit-game").show()
+      // } else {
+      //   $(".playAgain").hide()
+      //   $(".exit-game").hide()
+      // }
     }
   }
 //listens for change in play count
@@ -116,6 +128,39 @@ function setPlay(snap){
       plays = val;
       console.log("plays", plays)
 
+    }
+}
+
+//listens for change in user count
+
+firebase.database()
+  .ref("users")
+  .on("value", setUser)
+
+  firebase.database()
+  .ref("users")
+  .once("value", assignRole)
+
+function setUser(snap){
+    if(snap) {
+      let val = snap.val()
+      users = val;
+      console.log("users", users)
+
+    }
+}
+
+function assignRole(snap) {
+    if(snap) {
+      let val = snap.val()
+      users = val;
+      if (users === null || users === 0) {
+        playerRole = "x"
+      } else if (users === 1){
+        playerRole = "o"
+      }
+      $(".playerCard").html(`<h4>You're Player ${playerRole}</h4>`)
+      console.log("playerRole", playerRole)
     }
 }
 
@@ -134,7 +179,7 @@ function changeSquare(evt) {
    let squarePosition = parseInt(evt.target.closest('td').dataset.position);
 
    //if valid array, update firebase
-   if(clickedSquare.src === emptySquare && gameover !== true) {
+   if(clickedSquare.src === emptySquare && gameover !== true && whoseTurn === playerRole) {
     //adds data position to array that stores the players choices
    firebase.database().ref("moves").update({ [squarePosition] : whoseTurn})
    //add play to count of plays
@@ -297,6 +342,8 @@ $('.enter-game').click(()=>{
     $('.landing').addClass('hide');
     $('.game_container').removeClass('hide');
     $('.messages').empty()
+    //signs user in
+    joinGame();
 
 })
 
@@ -318,6 +365,9 @@ $('.exit-game').click(()=>{
   firebase.database()
     .ref("gameover").set(false)
     $('.messages').empty()
+
+  //signs user out
+  leaveGame()
 
 })
 
@@ -379,4 +429,63 @@ const onNewMessage = (snap) => {
 
 form.addEventListener('submit', sendMessage)
 
-messagesRef.limitToLast(maxMsg).on('child_added', onNewMessage)
+ messagesRef.limitToLast(maxMsg).on('child_added', onNewMessage)
+
+
+
+
+//User Auth
+
+function joinGame() {
+  firebase.auth()
+    .signInAnonymously()
+    .then((e)=>{
+      console.log("e.uid", e.uid)
+      //set user count to one
+      let updateUser = users ? users+= 1 : 1;
+      firebase.database()
+        .ref("users")
+        .set(updateUser);
+      //call function to assign user role
+    })
+    .catch(function(error) {
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  console.log("error", errorMessage)
+  })
+}
+
+function leaveGame() {
+  firebase.auth()
+    .signOut()
+    .then(()=>{
+      let updateUser = users-= 1;
+      firebase.database()
+        .ref("users")
+        .set(users);
+    })
+}
+
+
+
+firebase.auth().signInAnonymously().catch(function(error) {
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  // ...
+});
+
+
+ firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    // User is signed in.
+    var isAnonymous = user.isAnonymous;
+    var uid = user.uid;
+    // ...
+  } else {
+    // User is signed out.
+    // ...
+  }
+  // ...
+});
