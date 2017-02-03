@@ -23,8 +23,6 @@ const messagesRef = firebase.database().ref('messages')
 const messagesDiv = document.querySelector('.messages')
 
 
-
-
 $(".playAgain").hide()
 $(".exit-game").hide()
 
@@ -65,7 +63,6 @@ firebase.database()
   })
 
 
-
 //listens for change in moves array
 firebase.database()
   .ref("moves")
@@ -98,6 +95,7 @@ firebase.database()
       console.log("whoseTurn", whoseTurn)
     }
   }
+
 
 //listens for change in gameover
 firebase.database()
@@ -187,11 +185,10 @@ function changeSquare(evt) {
    //add play to count of plays
    let newPlayCount = (plays + 1)
    firebase.database().ref("plays").set(newPlayCount)
-
    //run the check for win function
 
   }
- }
+}
 
 
 
@@ -229,7 +226,6 @@ function checkForWin(snap) {
 
 
 }
-
 
 
  //on the change player function
@@ -329,8 +325,6 @@ function playAgain() {
   firebase.database()
     .ref("gameover").set(false)
 
-
-
     $(".playAgain").hide()
     $(".exit-game").hide()
 
@@ -351,7 +345,6 @@ $('.enter-game').click(()=>{
     //signs user in
     joinGame();
 
-
 })
 
 $('.exit-game').click(()=>{
@@ -371,8 +364,7 @@ $('.exit-game').click(()=>{
   //game is not over
   firebase.database()
     .ref("gameover").set(false)
-
-  $('.messages').empty()
+    $('.messages').empty()
 
   //signs user out
   leaveGame()
@@ -385,8 +377,8 @@ $('.exit-game').click(()=>{
 const sendMessage = (evt) => {
   evt.preventDefault()
 
-  const nameInput = evt.target.elements.name // evt.target.querySelctor('[name="name"]')
-  const contentInput = evt.target.elements.content // evt.target.querySelctor('[name="content"]')
+  const nameInput = evt.target.elements.name
+  const contentInput = evt.target.elements.content
 
   const name = nameInput.value.trim()
   const content = contentInput.value.trim()
@@ -397,11 +389,12 @@ const sendMessage = (evt) => {
   }
 }
 
+//assembling a doc fragment
 const renderMessage = (msg) => {
-   const docFragment = document.createDocumentFragment()
+   const docFrag = document.createDocumentFragment()
 
    const div = document.createElement('DIV')
-   docFragment.appendChild(div)
+   docFrag.appendChild(div)
 
    const strong = document.createElement('STRONG')
    div.appendChild(strong)
@@ -418,26 +411,23 @@ const renderMessage = (msg) => {
    const content = document.createTextNode(msg.content)
    span.appendChild(content)
 
-   return docFragment
- }
+   return docFrag
+}
 
- const onNewMessage = (snap) => {
-   const msg = snap.val() // { name: 'Scott', content: 'Hey' }
 
-   messagesDiv.appendChild(renderMessage(msg))
+const onNewMessage = (snap) => {
+  const msg = snap.val() // { name: 'Scott', content: 'Hey' }
 
-   // messagesDiv.innerHTML += `
-   //   <div>
-   //     <strong>${msg.name}</strong>: <span>${msg.content}</span>
-   //   </div>
-   // `
+  messagesDiv.appendChild(renderMessage(msg))
 
-   if (messagesDiv.childElementCount > maxMsg) {
-     messagesDiv.firstChild.remove()
-   }
- }
+  console.log(renderMessage(msg));
 
- form.addEventListener('submit', sendMessage)
+  if (messagesDiv.childElementCount > maxMsg) {
+      messagesDiv.firstChild.remove()
+  }
+}
+
+form.addEventListener('submit', sendMessage)
 
  messagesRef.limitToLast(maxMsg).on('child_added', onNewMessage)
 
